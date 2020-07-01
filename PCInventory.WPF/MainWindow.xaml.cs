@@ -49,6 +49,18 @@ namespace PCInventory.WPF
             DatosDataGrid.ItemsSource = listaEquipos;
         }
 
+
+        private async Task Post()
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("https://localhost:44331");
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+
+            var data = System.Text.Json.JsonSerializer.Serialize(Equipo);
+            await client.PostAsync("api/equipos", new StringContent(data));
+        }
+        
         private void Limpiar()
         {
             this.Equipo = new Equipos();
@@ -106,21 +118,23 @@ namespace PCInventory.WPF
             Propiedades();
         }
 
-        private void GuardarButton_Click(object sender, RoutedEventArgs e)
+        private async void GuardarButton_Click(object sender, RoutedEventArgs e)
         {
-            bool paso = false;
+            //bool paso = false;
 
-            paso = EquiposBLL.Guardar(Equipo);
+            //paso = EquiposBLL.Guardar(Equipo);
 
-            if (paso)
-            {
-                Limpiar();
-                MessageBox.Show("Transaccione exitosa!", "Exito", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show("Transaccion Fallida", "Fallo", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //if (paso)
+            //{
+            //    Limpiar();
+            //    MessageBox.Show("Transaccione exitosa!", "Exito", MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Transaccion Fallida", "Fallo", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+
+            await Post();
 
         }
 

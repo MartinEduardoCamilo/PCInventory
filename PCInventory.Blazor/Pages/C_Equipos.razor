@@ -78,61 +78,59 @@
 
     private async Task Buscar()
     {
-         HttpClient client = new HttpClient();
+        HttpClient client = new HttpClient();
 
-            client.BaseAddress = new Uri("https://localhost:44331");
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        client.BaseAddress = new Uri("https://localhost:44331");
+        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage response = await client.GetAsync("api/equipos");
+        HttpResponseMessage response = await client.GetAsync("api/equipos");
 
-            if (response.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
+        {
+            var txto = response.Content.ReadAsStringAsync();
+            using var responseStream = await response.Content.ReadAsStreamAsync();
             {
-                var txto= response.Content.ReadAsStringAsync();
-                using var responseStream = await response.Content.ReadAsStreamAsync();
-                {
-                    lista = await System.Text.Json.JsonSerializer.DeserializeAsync<List<Equipos>>(responseStream);
-                }
-
+                lista = await System.Text.Json.JsonSerializer.DeserializeAsync<List<Equipos>>(responseStream);
             }
 
+        }
 
-        //try
-        //{
-        //    if (Filtro == null)
-        //    {
-
-        //    }
-        //    else
-        //    {
-        //        lista = BLL.EquiposBLL.GetList(a => true);
-
-        //        if (lista.Count == 0)
-        //        {
-
-        //        }
-        //        else
-        //        {
-
-        //            switch (Filtro)
-        //            {
-        //                case "Todo":
-        //                    lista = EquiposBLL.GetList(e => true);
-        //                    break;
-        //                case "ID":
-        //                    lista = EquiposBLL.GetList(e => e.EquipoId == Convert.ToInt32(Criterio));
-        //                    break;
-        //                case "Nombre":
-        //                    lista = EquiposBLL.GetList(e => e.Nombre == Criterio);
-        //                    break;
-        //            }
-
-        //        }
-        //    }
-        //}
-        //catch (Exception)
-        //{
-        //    throw;
-        //}
     }
+    //try
+    //{
+    //    if (Filtro == null)
+    //    {
 
+    //    }
+    //    else
+    //    {
+    //        lista = BLL.EquiposBLL.GetList(a => true);
+
+    //        if (lista.Count == 0)
+    //        {
+
+    //        }
+    //        else
+    //        {
+
+    //            switch (Filtro)
+    //            {
+    //                case "Todo":
+    //                    lista = EquiposBLL.GetList(e => true);
+    //                    break;
+    //                case "ID":
+    //                    lista = EquiposBLL.GetList(e => e.EquipoId == Convert.ToInt32(Criterio));
+    //                    break;
+    //                case "Nombre":
+    //                    lista = EquiposBLL.GetList(e => e.Nombre == Criterio);
+    //                    break;
+    //            }
+
+    //        }
+    //    }
+    //}
+    //catch (Exception)
+    //{
+    //    throw;
+    //}
 }
